@@ -16,8 +16,8 @@ public class PlayerAiming : MonoBehaviour
     private void Update()
     {
         if(playerInputs.IsFiring)
-        {
             weapon.StartFiring();
-        }
+        else
+            weapon.StopFiring();
     }
 }
