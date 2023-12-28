@@ -1,3 +1,4 @@
+using StarterAssets;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,18 +6,46 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputs : MonoBehaviour
 {
+
+    private PlayerActionMap playerActionMap;
+
     public bool IsFiring { get; private set; }
+
+    public bool IsJumped { get; private set; }
+
+    public bool IsSprinting { get; private set; }
 
     public Vector2 LookDir {  get; private set; }
 
-    public void OnFire(InputAction.CallbackContext value)
+    public Vector2 MoveDir { get; private set; }
+
+    public bool IsDanceTriggered { get; private set; }
+
+    private void Awake()
     {
-        IsFiring = value.action.triggered;
-        Debug.Log(IsFiring);
+        playerActionMap = new PlayerActionMap();
     }
 
-    public void OnLook(InputAction.CallbackContext value)
+    private void OnEnable()
     {
-        LookDir = value.ReadValue<Vector2>();
+        playerActionMap.Enable();
+        playerActionMap.Player.Enable();
+    }
+
+    private void OnDisable()
+    {
+        playerActionMap.Disable();
+        playerActionMap.Player.Disable();
+    }
+
+    private void Update()
+    {
+        MoveDir = playerActionMap.Player.Move.ReadValue<Vector2>();
+        LookDir = playerActionMap.Player.Look.ReadValue<Vector2>();
+
+        IsFiring = playerActionMap.Player.Fire.triggered;
+        IsJumped = playerActionMap.Player.Jump.IsPressed();
+        IsSprinting = playerActionMap.Player.Sprint.IsPressed();
+        IsDanceTriggered = playerActionMap.Player.DanceTrigger.WasPressedThisFrame();
     }
 }
