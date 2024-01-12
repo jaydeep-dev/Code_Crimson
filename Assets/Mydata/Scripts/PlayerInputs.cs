@@ -21,6 +21,8 @@ public class PlayerInputs : MonoBehaviour
 
     public bool IsDanceTriggered { get; private set; }
 
+    public bool IsDanceChangeRequested { get; private set; }
+
     private void Awake()
     {
         playerActionMap = new PlayerActionMap();
@@ -44,8 +46,9 @@ public class PlayerInputs : MonoBehaviour
         LookDir = playerActionMap.Player.Look.ReadValue<Vector2>();
 
         IsFiring = playerActionMap.Player.Fire.triggered;
-        IsJumped = playerActionMap.Player.Jump.IsPressed();
+        IsJumped = playerActionMap.Player.Jump.WasPressedThisFrame();
         IsSprinting = playerActionMap.Player.Sprint.IsPressed();
         IsDanceTriggered = playerActionMap.Player.DanceTrigger.WasPressedThisFrame();
+        IsDanceChangeRequested = playerActionMap.Player.DanceChange.WasPressedThisFrame();
     }
 }

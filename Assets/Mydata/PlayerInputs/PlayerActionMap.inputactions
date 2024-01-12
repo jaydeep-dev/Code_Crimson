@@ -58,6 +58,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "DanceChange",
+                    "type": "Button",
+                    "id": "9ce2e16d-745b-45ad-9db8-319156ba0e15",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -262,11 +271,22 @@
                 {
                     "name": "",
                     "id": "b7b58414-2fb7-4a60-9286-663562ca6110",
-                    "path": "<Keyboard>/leftCtrl",
+                    "path": "<Keyboard>/backquote",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "DanceTrigger",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4387c9d3-d148-407c-8e61-a41a58516284",
+                    "path": "<Keyboard>/leftAlt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DanceChange",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

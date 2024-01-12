@@ -6,13 +6,18 @@ public class PlayerMovementController : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float sprintSpeed = 5f;
+    [SerializeField] private float jumpHeight = 1.0f;
+
+    [SerializeField] private Transform groundCheckTransform;
 
     private PlayerInputs playerInputs;
     private CharacterController controller;
     private const float gravityValue = -9.81f;
-    private const float jumpHeight = 1.0f;
-    private bool groundedPlayer;
     private Vector3 playerVelocity;
+
+    private Coroutine jumpRoutine = null;
+
+    public bool IsGrounded { get; private set; }
 
     private void Awake()
     {
@@ -23,27 +28,37 @@ public class PlayerMovementController : MonoBehaviour
     private void FixedUpdate()
     {
         var move = new Vector3(playerInputs.MoveDir.x, 0, playerInputs.MoveDir.y);
-        move.Normalize();
+        var finalMoveSpeed = playerInputs.IsSprinting ? moveSpeed : sprintSpeed;
+        controller.Move(Time.fixedDeltaTime * finalMoveSpeed * move);
 
-        var finalSpeed = playerInputs.IsSprinting ? moveSpeed + sprintSpeed : moveSpeed;
-        controller.Move(Time.fixedDeltaTime * finalSpeed * move);
+        IsGrounded = Physics.Raycast(groundCheckTransform.position, Vector3.down, .5f);
 
-        groundedPlayer = controller.isGrounded;
-        if (groundedPlayer && playerVelocity.y < 0)
+        if (IsGrounded && playerVelocity.y < 0)
         {
             playerVelocity.y = 0f;
         }
 
-        Debug.Log(playerInputs.IsJumped && controller.isGrounded);
-
         // Changes the height position of the player..
-        if (playerInputs.IsJumped && groundedPlayer)
+        if (playerInputs.IsJumped && IsGrounded)
         {
-            playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
+            if(jumpRoutine == null)
+            {
+                jumpRoutine = StartCoroutine(DelayedJump());
+            }
         }
 
         playerVelocity.y += gravityValue * Time.fixedDeltaTime;
         controller.Move(playerVelocity * Time.fixedDeltaTime);
     }
 
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireSphere(groundCheckTransform.position, .5f);
+    }
+
+    private IEnumerator DelayedJump()
+    {
+        yield return new WaitForSeconds(.8f);
+        playerVelocity.y += Mathf.Sqrt(jumpHeight * -1.0f * gravityValue);
+    }
 }

@@ -80,6 +80,15 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DanceChange"",
+                    ""type"": ""Button"",
+                    ""id"": ""9ce2e16d-745b-45ad-9db8-319156ba0e15"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -284,11 +293,22 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""b7b58414-2fb7-4a60-9286-663562ca6110"",
-                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""path"": ""<Keyboard>/backquote"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""DanceTrigger"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4387c9d3-d148-407c-8e61-a41a58516284"",
+                    ""path"": ""<Keyboard>/leftAlt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DanceChange"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -353,6 +373,7 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_DanceTrigger = m_Player.FindAction("DanceTrigger", throwIfNotFound: true);
+        m_Player_DanceChange = m_Player.FindAction("DanceChange", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -420,6 +441,7 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_DanceTrigger;
+    private readonly InputAction m_Player_DanceChange;
     public struct PlayerActions
     {
         private @PlayerActionMap m_Wrapper;
@@ -430,6 +452,7 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputAction @DanceTrigger => m_Wrapper.m_Player_DanceTrigger;
+        public InputAction @DanceChange => m_Wrapper.m_Player_DanceChange;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -457,6 +480,9 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
             @DanceTrigger.started += instance.OnDanceTrigger;
             @DanceTrigger.performed += instance.OnDanceTrigger;
             @DanceTrigger.canceled += instance.OnDanceTrigger;
+            @DanceChange.started += instance.OnDanceChange;
+            @DanceChange.performed += instance.OnDanceChange;
+            @DanceChange.canceled += instance.OnDanceChange;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -479,6 +505,9 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
             @DanceTrigger.started -= instance.OnDanceTrigger;
             @DanceTrigger.performed -= instance.OnDanceTrigger;
             @DanceTrigger.canceled -= instance.OnDanceTrigger;
+            @DanceChange.started -= instance.OnDanceChange;
+            @DanceChange.performed -= instance.OnDanceChange;
+            @DanceChange.canceled -= instance.OnDanceChange;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -540,5 +569,6 @@ public partial class @PlayerActionMap: IInputActionCollection2, IDisposable
         void OnSprint(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
         void OnDanceTrigger(InputAction.CallbackContext context);
+        void OnDanceChange(InputAction.CallbackContext context);
     }
 }
