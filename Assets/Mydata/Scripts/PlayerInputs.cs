@@ -45,7 +45,7 @@ public class PlayerInputs : MonoBehaviour
         MoveDir = playerActionMap.Player.Move.ReadValue<Vector2>();
         LookDir = playerActionMap.Player.Look.ReadValue<Vector2>();
 
-        IsFiring = playerActionMap.Player.Fire.triggered;
+        IsFiring = playerActionMap.Player.Fire.IsPressed();
         IsJumped = playerActionMap.Player.Jump.WasPressedThisFrame();
         IsSprinting = playerActionMap.Player.Sprint.IsPressed();
         IsDanceTriggered = playerActionMap.Player.DanceTrigger.WasPressedThisFrame();

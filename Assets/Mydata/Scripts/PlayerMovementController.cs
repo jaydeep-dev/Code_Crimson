@@ -16,6 +16,7 @@ public class PlayerMovementController : MonoBehaviour
     private Vector3 playerVelocity;
 
     private Coroutine jumpRoutine = null;
+    private Transform camTransform;
 
     public bool IsGrounded { get; private set; }
 
@@ -23,13 +24,15 @@ public class PlayerMovementController : MonoBehaviour
     {
         playerInputs = GetComponent<PlayerInputs>();
         controller = GetComponent<CharacterController>();
+        camTransform = Camera.main.transform;
     }
 
     private void FixedUpdate()
     {
         var move = new Vector3(playerInputs.MoveDir.x, 0, playerInputs.MoveDir.y);
-        var finalMoveSpeed = playerInputs.IsSprinting ? moveSpeed : sprintSpeed;
-        controller.Move(Time.fixedDeltaTime * finalMoveSpeed * move);
+        var finalMove = move.x * camTransform.right + move.z * camTransform.forward;
+        var finalMoveSpeed = playerInputs.IsSprinting ? sprintSpeed : moveSpeed;
+        controller.Move(Time.fixedDeltaTime * finalMoveSpeed * finalMove);
 
         IsGrounded = Physics.Raycast(groundCheckTransform.position, Vector3.down, .5f);
 
@@ -41,7 +44,7 @@ public class PlayerMovementController : MonoBehaviour
         // Changes the height position of the player..
         if (playerInputs.IsJumped && IsGrounded)
         {
-            if(jumpRoutine == null)
+            //if(jumpRoutine == null)
             {
                 jumpRoutine = StartCoroutine(DelayedJump());
             }
@@ -58,7 +61,8 @@ public class PlayerMovementController : MonoBehaviour
 
     private IEnumerator DelayedJump()
     {
-        yield return new WaitForSeconds(.8f);
+        yield return new WaitForSeconds(.6f);
         playerVelocity.y += Mathf.Sqrt(jumpHeight * -1.0f * gravityValue);
+        jumpRoutine = null;
     }
 }

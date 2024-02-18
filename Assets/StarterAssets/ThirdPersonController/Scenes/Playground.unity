@@ -197,7 +197,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 275803}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.024976578, y: 1e-45, z: -0, w: 0.999688}
+  m_LocalRotation: {x: 0.024976578, y: -9.84841e-16, z: -1.4705533e-17, w: 0.999688}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -496,7 +496,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 59038816}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.011353529, y: 9.4305095e-17, z: 1.0643042e-18, w: 0.99993557}
+  m_LocalRotation: {x: -0.011353527, y: -9.312626e-10, z: -1.0573797e-11, w: 0.99993557}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3270,6 +3270,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Y Bot@Breathing Idle
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: dc661bda7892ee2498bbef6f029eacdb,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -4742,7 +4747,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1292988723}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7ab478aeb3661ce43b12652749cf92fc, type: 3}
   m_Name: 
@@ -4856,7 +4861,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2
-  sprintSpeed: 2
+  sprintSpeed: 4
   jumpHeight: 10
   groundCheckTransform: {fileID: 1703609209}
 --- !u!114 &1292988735
@@ -5579,7 +5584,7 @@ GameObject:
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1500879278
 Transform:
   m_ObjectHideFlags: 0
@@ -7687,7 +7692,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2045465478}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ea9f19db33c26a848a5c56fda276d317, type: 3}
   m_Name: 
