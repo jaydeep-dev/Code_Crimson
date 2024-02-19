@@ -6,7 +6,7 @@ public class RaycastWeapon : MonoBehaviour
 {
     public bool isFiring = false;
     public Transform raycastOrigin;
-    public Transform raycastTarget;
+    [HideInInspector] public Transform raycastTarget;
     public TrailRenderer tracerEffect;
     [SerializeField] private float fireRate;
 
