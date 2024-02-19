@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +20,7 @@ public class PlayerMovementController : MonoBehaviour
     private Transform camTransform;
 
     public bool IsGrounded { get; private set; }
+    public bool IsSprinting { get; private set; }
 
     private void Awake()
     {
@@ -27,14 +29,37 @@ public class PlayerMovementController : MonoBehaviour
         camTransform = Camera.main.transform;
     }
 
+    private void OnEnable()
+    {
+        playerInputs.OnJump += OnJump;
+        playerInputs.OnSprint += val => IsSprinting = val;
+    }
+
+    private void OnJump(bool obj)
+    {
+        if (IsGrounded && jumpRoutine == null)
+        {
+            Debug.Log("JUMP");
+            jumpRoutine = StartCoroutine(DelayedJump());
+        }
+    }
+
+    private void Update()
+    {
+        IsGrounded = Physics.Raycast(groundCheckTransform.position, Vector3.down, .5f);
+    }
+
     private void FixedUpdate()
     {
-        var move = new Vector3(playerInputs.MoveDir.x, 0, playerInputs.MoveDir.y);
+        var moveInput = playerInputs.MoveInput;
+        var move = new Vector3(moveInput.x, 0, moveInput.y);
+        move.Normalize();
+
         var finalMove = move.x * camTransform.right + move.z * camTransform.forward;
-        var finalMoveSpeed = playerInputs.IsSprinting ? sprintSpeed : moveSpeed;
+        var finalMoveSpeed = IsSprinting ? sprintSpeed : moveSpeed;
+
         controller.Move(Time.fixedDeltaTime * finalMoveSpeed * finalMove);
 
-        IsGrounded = Physics.Raycast(groundCheckTransform.position, Vector3.down, .5f);
 
         if (IsGrounded && playerVelocity.y < 0)
         {
@@ -42,14 +67,6 @@ public class PlayerMovementController : MonoBehaviour
         }
 
         // Changes the height position of the player..
-        if (playerInputs.IsJumped && IsGrounded)
-        {
-            //if(jumpRoutine == null)
-            {
-                jumpRoutine = StartCoroutine(DelayedJump());
-            }
-        }
-
         playerVelocity.y += gravityValue * Time.fixedDeltaTime;
         controller.Move(playerVelocity * Time.fixedDeltaTime);
     }
@@ -61,8 +78,9 @@ public class PlayerMovementController : MonoBehaviour
 
     private IEnumerator DelayedJump()
     {
-        yield return new WaitForSeconds(.6f);
+        yield return new WaitForSeconds(.24f);
         playerVelocity.y += Mathf.Sqrt(jumpHeight * -1.0f * gravityValue);
+        yield return new WaitForSeconds(.24f);
         jumpRoutine = null;
     }
 }

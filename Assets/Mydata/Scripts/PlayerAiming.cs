@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerAiming : MonoBehaviour
 {
+    private bool isFiring;
     private RaycastWeapon weapon;
     private PlayerInputs playerInputs;
 
@@ -13,9 +14,14 @@ public class PlayerAiming : MonoBehaviour
         weapon = GetComponentInChildren<RaycastWeapon>();
     }
 
+    private void OnEnable()
+    {
+        playerInputs.OnFire += val => isFiring = val;
+    }
+
     private void Update()
     {
-        if(playerInputs.IsFiring)
+        if(isFiring)
             weapon.StartFiring();
         else
             weapon.StopFiring();

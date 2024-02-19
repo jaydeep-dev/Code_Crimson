@@ -10,14 +10,15 @@ public class PlayerAnimationController : MonoBehaviour
     private PlayerInputs playerInputs;
     private PlayerMovementController playerMovement;
 
-    private int danceIndex = 0;
-
     private readonly int XMOVE = Animator.StringToHash("Xmove");
     private readonly int YMOVE = Animator.StringToHash("Ymove");
     private readonly int DanceTrigger = Animator.StringToHash("DanceTrigger");
     private readonly int DanceChange = Animator.StringToHash("DanceIndex");
     private readonly int JumpTrigger = Animator.StringToHash("Jump");
     private readonly int IsGroundedBool = Animator.StringToHash("IsGrounded");
+
+    private int danceIndex = 0;
+    private bool isSprinting;
 
     private void Awake()
     {
@@ -26,34 +27,39 @@ public class PlayerAnimationController : MonoBehaviour
         playerMovement = GetComponent<PlayerMovementController>();
     }
 
+    private void OnEnable()
+    {
+        playerInputs.OnSprint += val => isSprinting = val;
+
+        playerInputs.OnDanceTriggered += val =>
+        {
+            if (val == false) 
+                return;
+
+            animator.SetTrigger(DanceTrigger);
+            AudioSource.PlayClipAtPoint(danceMusicsList[danceIndex % 2], transform.position);
+        };
+
+        playerInputs.OnDanceChanged += _ => animator.SetFloat(DanceChange, (++danceIndex) % 2);
+        playerInputs.OnJump += val =>
+        {
+            if (playerMovement.IsGrounded)
+                animator.SetTrigger(JumpTrigger);
+        };
+    }
+
     private void Update()
     {
-        var move = playerInputs.MoveDir;
+        var move = playerInputs.MoveInput;
 
-        if(playerInputs.IsSprinting)
-        {
+        if (isSprinting)
             move *= 2;
-        }
 
         animator.SetFloat(XMOVE, Mathf.Lerp(animator.GetFloat(XMOVE), move.x, Time.deltaTime * 5));
         animator.SetFloat(YMOVE, Mathf.Lerp(animator.GetFloat(YMOVE), move.y, Time.deltaTime * 5));
 
-        if(playerInputs.IsDanceTriggered)
-        {
-            animator.SetTrigger(DanceTrigger);
-            AudioSource.PlayClipAtPoint(danceMusicsList[danceIndex % 2], transform.position);
-        }
-
-        if(playerInputs.IsDanceChangeRequested)
-        {
-            animator.SetFloat(DanceChange, (++danceIndex) % 2);
-        }
-
-        if(playerInputs.IsJumped)
-        {
-            animator.SetTrigger(JumpTrigger);
-        }
-
         animator.SetBool(IsGroundedBool, playerMovement.IsGrounded);
+        if (!playerMovement.IsGrounded)
+            animator.ResetTrigger(JumpTrigger);
     }
 }
