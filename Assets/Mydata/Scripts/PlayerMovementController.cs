@@ -49,6 +49,11 @@ public class PlayerMovementController : MonoBehaviour
         IsGrounded = Physics.Raycast(groundCheckTransform.position, Vector3.down, .5f);
     }
 
+    private void OnAnimatorMove()
+    {
+        
+    }
+
     private void FixedUpdate()
     {
         var moveInput = playerInputs.MoveInput;

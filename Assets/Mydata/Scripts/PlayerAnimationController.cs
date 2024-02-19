@@ -33,11 +33,7 @@ public class PlayerAnimationController : MonoBehaviour
 
         playerInputs.OnDanceTriggered += val =>
         {
-            if (val == false) 
-                return;
-
-            animator.SetTrigger(DanceTrigger);
-            AudioSource.PlayClipAtPoint(danceMusicsList[danceIndex % 2], transform.position);
+            StartCoroutine(PlayEmote());
         };
 
         playerInputs.OnDanceChanged += _ => animator.SetFloat(DanceChange, (++danceIndex) % 2);
@@ -46,6 +42,23 @@ public class PlayerAnimationController : MonoBehaviour
             if (playerMovement.IsGrounded)
                 animator.SetTrigger(JumpTrigger);
         };
+    }
+
+    private IEnumerator PlayEmote()
+    {
+        animator.SetTrigger(DanceTrigger);
+        AudioSource.PlayClipAtPoint(danceMusicsList[danceIndex % 2], transform.position);
+        playerInputs.enabled = false;
+        animator.applyRootMotion = true;
+        var lookScript = GetComponent<PlayerLookForward>();
+        lookScript.enabled = false;
+        yield return new WaitForSeconds(.5f);
+        var time = animator.GetCurrentAnimatorStateInfo(0).length;
+        Debug.Log(time);
+        yield return new WaitForSeconds(time);
+        lookScript.enabled = true;
+        animator.applyRootMotion = false;
+        playerInputs.enabled = true;
     }
 
     private void Update()

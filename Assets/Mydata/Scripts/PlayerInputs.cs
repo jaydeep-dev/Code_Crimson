@@ -59,11 +59,11 @@ public class PlayerInputs : MonoBehaviour
 
         // Dance (Trigger)
         playerActionMap.Player.DanceTrigger.performed += ctx => OnDanceTriggered?.Invoke(true);
-        playerActionMap.Player.DanceTrigger.canceled += ctx => OnDanceTriggered?.Invoke(false);
+        //playerActionMap.Player.DanceTrigger.canceled += ctx => OnDanceTriggered?.Invoke(false);
 
         // Dance (Change)
         playerActionMap.Player.DanceChange.performed += ctx => OnDanceChanged?.Invoke(true);
-        playerActionMap.Player.DanceChange.canceled += ctx => OnDanceChanged?.Invoke(false);
+        //playerActionMap.Player.DanceChange.canceled += ctx => OnDanceChanged?.Invoke(false);
     }
 
     private void Update()
