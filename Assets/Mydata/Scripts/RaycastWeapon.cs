@@ -34,6 +34,7 @@ public class RaycastWeapon : MonoBehaviour
             {
                 tracer.transform.position = hitinfo.point;
             }
+            Destroy(tracer.gameObject, 5f);
         }
     }
 
