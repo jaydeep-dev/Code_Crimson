@@ -16,7 +16,7 @@ public class ActiveWeapon : MonoBehaviour
     private void Awake()
     {
         playerInputs = GetComponent<PlayerInputs>();
-        weapon = GetComponentInChildren<RaycastWeapon>();
+        var weapon = GetComponentInChildren<RaycastWeapon>();
         EquipWeapon(weapon);
     }
 
@@ -34,6 +34,8 @@ public class ActiveWeapon : MonoBehaviour
             weapon.StartFiring();
         else
             weapon.StopFiring();
+
+        weapon.UpdateBullet(Time.deltaTime);   
     }
 
     public void EquipWeapon(RaycastWeapon newWeapon)
